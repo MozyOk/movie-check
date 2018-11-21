@@ -12,6 +12,19 @@ function delay(timeout) {
   });
 }
 
+const pc = {
+  'name': 'Chrome Mac',
+  'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
+  'viewport': {
+      'width': 1200,
+      'height': 800,
+      'deviceScaleFactor': 1,
+      'isMobile': false,
+      'hasTouch': false,
+      'isLandscape': false
+  }
+};
+
 const puppeteer = require('puppeteer');
 (async () => {
   const browser = await puppeteer.launch({
@@ -19,11 +32,7 @@ const puppeteer = require('puppeteer');
     slowMo: 100
   })
   const page = await browser.newPage()
-
-  await page.setViewport({
-    width: 1280,
-    height: 920
-  })
+  await page.emulate(pc);
 
   for (let i = 0; i < textArray.length; i++) {
     const movie_id = textArray[i]
@@ -49,7 +58,7 @@ const puppeteer = require('puppeteer');
     await page.waitForSelector('.ytd-transcript-body-renderer')
     const transcript = await page.evaluate(() => document.querySelector('#body .ytd-transcript-renderer').innerText);
     console.log(transcript)
-    
+
   }
   await browser.close()
 })()
